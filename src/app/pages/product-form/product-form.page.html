@@ -1,0 +1,63 @@
+<ion-content [fullscreen]="true">
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>{{ currentProductId ? 'Edit product' : 'New product' }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      @if (productForm) {
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form-grid">
+          <ion-item lines="full">
+            <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+            <ion-label position="floating">Product name</ion-label>
+            <ion-input formControlName="name" maxlength="80" clear-input="true"></ion-input>
+          </ion-item>
+          <ion-note class="hint" *ngIf="productForm.get('name')?.untouched">Max. 80 caracteres.</ion-note>
+          <ion-note color="danger" *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+            El nombre es obligatorio.
+          </ion-note>
+          <ion-item lines="full">
+            <ion-icon name="document-text-outline" slot="start"></ion-icon>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input formControlName="description" maxlength="140"></ion-input>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            <ion-label position="floating">Category</ion-label>
+            <ion-select formControlName="category_id" interface="popover" placeholder="Select a category">
+              @for (category of categories; track category.id) {
+                <ion-select-option [value]="category.id">{{ category.name }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+          <ion-note color="danger" *ngIf="productForm.get('category_id')?.invalid && productForm.get('category_id')?.touched">
+            Select a category
+          </ion-note>
+          <div class="image-row">
+            <ion-item lines="full" class="image-input">
+              <ion-icon name="image-outline" slot="start"></ion-icon>
+              <ion-label >Image</ion-label>
+              <ion-button size="small" fill="clear" slot="end" (click)="selectAnImage()">Select</ion-button>
+            </ion-item>
+            <div class="image-preview" *ngIf="productForm.value.image_url; else placeholderImg">
+              <ion-img [src]="productForm.value.image_url" alt="Image preview"></ion-img>
+            </div>
+            <ng-template #placeholderImg>
+              <div class="image-placeholder">
+                <ion-icon name="image-outline"></ion-icon>
+                <span>No image</span>
+              </div>
+            </ng-template>
+          </div>
+          <div class="actions">
+            <ion-button type="button" color="secondary" (click)="cancel()">Cancelar</ion-button>
+            <ion-button type="submit" color="primary" [disabled]="productForm.invalid">
+              {{ currentProductId ? 'Actualizar' : 'Guardar' }}
+            </ion-button>
+          </div>
+        </form>
+      }
+    </ion-card-content>
+  </ion-card>
+</ion-content>

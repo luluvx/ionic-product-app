@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true">
+  <h1>Products</h1>
+  <p>Your products</p>
+  @if (!isLoading && products.length > 0) {
+    <ion-list>
+      @for (product of products; track product.id) {
+        <ion-card>
+          <ion-item lines="none">
+            @if (product.image_url) {
+              <ion-thumbnail slot="start">
+                <ion-img [src]="product.image_url"></ion-img>
+              </ion-thumbnail>
+            } @else {
+              <ion-avatar slot="start">
+                <ion-icon name="cube-outline"></ion-icon>
+              </ion-avatar>
+            }
+
+            <ion-label>
+              <h2 class="item-title">{{ product.name }}</h2>
+              <p>{{ product.description }}</p>
+            </ion-label>
+
+            <ion-buttons slot="end">
+              <ion-button fill="clear" color="secondary" (click)="editProduct(product.id)">
+                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" color="primary" (click)="deleteProduct(product.id)">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </ion-card>
+      }
+    </ion-list>
+  }
+
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="createProduct()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  @if (!isLoading && products.length === 0) {
+    <div class="empty-state">
+      <ion-icon name="albums-outline"></ion-icon>
+      <h3>There are no products</h3>
+      <p>Create your first product</p>
+      <ion-button color="primary" (click)="createProduct()">
+        <ion-icon slot="start" name="add"></ion-icon>
+        Create product
+      </ion-button>
+    </div>
+  }
+
+</ion-content>

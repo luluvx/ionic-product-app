@@ -1,0 +1,23 @@
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    <div class="login-form">
+          <h1>Login</h1>
+        @if (messageError) {
+        <ion-text color="danger">
+          <p>{{ messageError }}</p>
+        </ion-text>
+        }
+        <ion-item>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input type="text" [(ngModel)]="username" required placeholder="Username"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" [(ngModel)]="password" required placeholder="Password"></ion-input>
+        </ion-item>
+        <ion-button expand="block" (click)="login()" [disabled]="isLoading">
+          {{ isLoading ? 'Iniciando...' : 'Login' }}
+        </ion-button>
+    </div>
+  </div>
+</ion-content>
